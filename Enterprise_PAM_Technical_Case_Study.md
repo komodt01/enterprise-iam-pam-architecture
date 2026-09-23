@@ -40,7 +40,11 @@ The Vault SSH role was configured with a certificate TTL so that issued SSH cert
 
 I chose this approach because privileged access should not remain valid indefinitely simply because it was authorized at some point in the past. Requiring a new certificate after expiration creates a natural access lifecycle and reduces the usefulness of an older credential.
 
-Certificate expiration does not address every access-removal scenario. In a production environment, I would also evaluate how access could be terminated before the certificate TTL expires.
+Certificate expiration does not address every access-removal scenario. The TTL limits how long the certificate can be used to establish new authenticated access, but it should not be treated as an immediate revocation or session-termination mechanism.
+
+A production design would need to distinguish among certificate expiration, credential revocation, active-session termination, and account disablement. For example, if an administrator leaves the organization or a privileged endpoint is suspected of compromise, waiting for the certificate TTL to expire may not provide sufficiently rapid containment.
+
+The appropriate termination mechanism would depend on the incident and the access path, but the architecture must support removal of privileged authority when the business or security condition changes rather than relying solely on natural certificate expiration.
 
 ### 3. Separate Access Issuance from Host Enforcement
 
